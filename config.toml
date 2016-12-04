@@ -1,0 +1,13 @@
+baseurl = "http://rainshowers.org/"
+title = "rainshowers.org"
+languageCode = "en-us"
+theme = "vienna"
+copyright = "&copy;2016 by Kenneth Galle"
+[params]
+	googleplus = "109882476484270566298"
+	github = "kagalle"
+	linkedin = "kennethgalle"
+	stackoverflow = "3728147"
+	author = "Kenneth Galle"
+	contact = "mailto:ken.galle@rainshowers.org"
+	subtitle = "Articles about software development and notes on development tools."
