@@ -1,4 +1,4 @@
-baseurl = "http://rainshowers.org/"
+baseurl = "http://localhost:1313/"
 title = "rainshowers.org"
 languageCode = "en-us"
 theme = "vienna"
