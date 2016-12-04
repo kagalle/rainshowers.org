@@ -3,6 +3,7 @@ title = "rainshowers.org"
 languageCode = "en-us"
 theme = "vienna"
 copyright = "&copy;2016 by Kenneth Galle"
+PygmentsCodeFences = true
 [params]
 	googleplus = "109882476484270566298"
 	github = "kagalle"
