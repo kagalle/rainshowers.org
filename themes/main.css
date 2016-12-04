@@ -1,5 +1,5 @@
 main {
-    max-width: 750px;
+    max-width: 1200px;
     word-wrap: break-word;
 }
 
@@ -290,5 +290,13 @@ article section img {
     max-width: 100%;
     height: auto;
     margin: 13px auto;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
 }
 

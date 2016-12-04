@@ -1,6 +1,6 @@
 +++
 Tags = [ "Mercurial", "Git" ]
-date = "2010-10-23"
+date = "2009-06-28"
 title = "Convert a mercurial repository to a git repository"
 Description = ""
 

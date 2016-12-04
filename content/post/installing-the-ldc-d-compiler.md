@@ -1,12 +1,14 @@
 +++
 Tags = [ "Compilers", "ldc" ]
-date = "2010-10-23"
+date = "2009-12-04"
 title = "Installing the ldc D Compiler"
 Description = ""
 
 +++
 
-The D language compiler [ldc](http://www.dsource.org/projects/ldc%7Cldc) is not yet part of the standard repository of packages available for arch linux. There are some "aur" [community contributed items](http://aur.archlinux.org/packages.php?O=0&K=ldc&do_Search=Go). I chose to build from source. Instructions page at [build instructions](http://www.dsource.org/projects/ldc/wiki/BuildInstructions). Ldc is built for the [llvm](http://llvm.org/) low level virtual machine. Currently the 2.6 release version of llvm is used. The instructions have you downloading the release as a zip - but I chose to check out the release from the [svn repository](http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_26) - since before the release that was the only option. Ldc doesn't have an up-to-date release and so the current development snap-shot is used. In summary:
+The D language compiler [ldc](http://www.dsource.org/projects/ldc%7Cldc) is not yet part of the standard repository of packages available for arch linux. There are some "aur" [community contributed items](http://aur.archlinux.org/packages.php?O=0&K=ldc&do_Search=Go). I chose to build from source.<!--more-->
+
+ Instructions page at [build instructions](http://www.dsource.org/projects/ldc/wiki/BuildInstructions). Ldc is built for the [llvm](http://llvm.org/) low level virtual machine. Currently the 2.6 release version of llvm is used. The instructions have you downloading the release as a zip - but I chose to check out the release from the [svn repository](http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_26) - since before the release that was the only option. Ldc doesn't have an up-to-date release and so the current development snap-shot is used. In summary:
 
 llvm:
 ```
