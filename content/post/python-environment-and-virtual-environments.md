@@ -7,11 +7,11 @@ title = "Python environment and virtual environments"
 
 +++
 
-While working though an introduction to virtual environments[1] I was able to get to the point that I was in the virtual environment by way of `activate` and then by habit, typed control-D to exit the virtual environment.  To my surprise I ended up exiting my entire terminal session, though it was obvious since I "sourced" `activate` into my current shell... never mind that.  This post is about a way to avoid all that.<!--more-->
+While working though an [introduction to virtual environments](https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/) I was able to get to the point that I was in the virtual environment by way of `activate` and then by habit, typed control-D to exit the virtual environment.  To my surprise I ended up exiting my entire terminal session, though it was obvious since I "sourced" `activate` into my current shell... never mind that.  This post is about a way to avoid all that.<!--more-->
 
-So I went searching and found[2] a page that described in full detail what I stumbled into, "Virtualenv's bin/activate is Doing It Wrong."
+So I went searching and found a page that described in full detail what I stumbled into, "[Virtualenv's bin/activate is Doing It Wrong](https://gist.github.com/datagrok/2199506)."
 
-This page led to a project call vex[3] which packaged up the idea layed out.
+This page led to a project call [vex](https://github.com/sashahart/vex) which packaged up the idea layed out.
 
 What was troubling me at first was why one minute running "pip list" showed the system installed python packages, while running it another time showed just those in the virtual environment.  What about the environment was making pip behave differently?  The version of pip that ends up in the virtual environment is not the same pip that is in the system.  I wasn't paying attention to what version was being run.  This is complicated by having both Python 2 and Python 3 installed on my system.  In the virtual environment, the modified PATH only overrides the versions of python and pip that the environment was created with.  If the virtual environment was created with Python 2, then running "pip3" is going to run the system pip, not the pip in the virtual environment.  So,
 
@@ -73,14 +73,4 @@ Steps so far...
     `(env3) bash-4.3$ exit`<br>
     `bash-4.3$ pip3 list`<br>
 
-There are some variations with Python 3, but as seen above, what works for Python 2 also works for Python 3.[4]  I'll save that for another day.
-
- 
-
-[1] https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/
-
-[2] https://gist.github.com/datagrok/2199506
-
-[3] https://github.com/sashahart/vex
-
-[4] https://docs.python.org/3/library/venv.html
+There are some variations with Python 3, but as seen above, what works for Python 2 also works for [Python 3](https://docs.python.org/3/library/venv.html).  I'll save that for another day.
