@@ -1,3 +1,6 @@
 #!/bin/bash
-hugo server -w -D
+# also serve draft documents
+#hugo server -w -D
+
+hugo server -w
 

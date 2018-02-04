@@ -9,6 +9,42 @@ title = "Python environment and virtual environments"
 
 While working though an [introduction to virtual environments](https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/) I was able to get to the point that I was in the virtual environment by way of `activate` and then by habit, typed control-D to exit the virtual environment.  To my surprise I ended up exiting my entire terminal session, though it was obvious since I "sourced" `activate` into my current shell... never mind that.  This post is about a way to avoid all that.<!--more-->
 
+### Summary of process when starting from a newly installed debian machine
+--- Article updated 2/3/18
+
+#### Initial setup only
+Install pip
+```text
+sudo apt-get install python-pip
+```
+Install virtualenv (globally)
+```text
+sudo pip install virtualenv
+```
+Install vex (globally)  (Note: this has a dependency on virtualenv, so this step would suffice for both this step and the previous.)
+```text
+sudo pip install vex
+```
+#### Setup project space
+Create the project folder and setup the environment
+
+```text
+~$ mkdir myproject
+~$ cd myproject/
+~/myproject$ virtualenv -p /usr/bin/python2 env2
+Running virtualenv with interpreter /usr/bin/python2
+New python executable in /home/ken/myproject/env2/bin/python2
+Also creating executable in /home/ken/myproject/env2/bin/python
+Installing setuptools, pip, wheel...done.
+```
+
+Enter the virtual environment using vex
+```text
+~/myproject$ vex --path env2 bash
+```
+Note: these steps don't include setting up the modified command prompt when within the environment, detailed below.
+
+### Original article
 So I went searching and found a page that described in full detail what I stumbled into, "[Virtualenv's bin/activate is Doing It Wrong](https://gist.github.com/datagrok/2199506)."
 
 This page led to a project call [vex](https://github.com/sashahart/vex) which packaged up the idea layed out.

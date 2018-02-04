@@ -12,3 +12,5 @@ PygmentsCodeFences = true
 	author = "Kenneth Galle"
 	contact = "mailto:ken.galle@rainshowers.org"
 	subtitle = "Articles about software development and notes on development tools."
+[indexes]
+	tag = "tags"
