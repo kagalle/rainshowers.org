@@ -6,7 +6,7 @@ date = "2016-08-28T00:11:45-05:00"
 title = "Publishing to PyPI on python.org"
 
 +++
-##### Editor note: This was a post that I never quite finished, but it has some useful information, so I'm passing it along. --3/4/2018
+##### Editor note: This was a post that I never quite finished, but it has some useful information, so I'm passing it along. <br> The information on the test PyPI site is now out of date.  --3/4/2018
 
 In searching for tutorials and videos about how to organize a Python project and publish it to PyPI, I was greeted with introductions and titles like these:
 
@@ -29,7 +29,7 @@ There are a lot of moving pieces to getting a Python project arranged and assemb
 - The testpypi.python.org site should be used before publishing to pypi.python.org.
 - Versioning needs to be decided on and know how it effects the publishing process.  Specially, it is important to use the test pypi site to verify that project is ready to go, since once published to pypi, you will have committed to the specified version number.
 
-Here are some notes on what I ended up with when publishing the first revision of *darfortie* [github](https://github.com/kagalle/darfortie) [PyPI](https://pypi.python.org/pypi?:action=display&amp;name=darfortie&amp;version=1.0")
+Here are some notes on what I ended up with when publishing the first revision of *darfortie* ( [github](https://github.com/kagalle/darfortie) | [PyPI](https://pypi.python.org/pypi?:action=display&amp;name=darfortie&amp;version=1.0") )
 
 *directory and file structure*
 ```text
@@ -59,4 +59,4 @@ Here are some notes on what I ended up with when publishing the first revision o
   - The packages line indicates that you want to publish a specified package.  If the directory containing the package is like-named and located directly under, that is all that is needed.  See [setup.py docs](https://docs.python.org/2/distutils/setupscript.html#listing-whole-packages)
   - The entry_points line indicates that a script should be created when the project is installed that the end-user can run.  `darfortie =` specifies the name the script should have, what remains on the line specifies the main function to run, `package.python_file:function_name`.
   - The `darfortie` directory is the package directory for the darfortie package that was specified in the `packages` line of setup.py.
-  - The __init__.py file indicates that this is in fact a package and normally includes imports from all of the files in the package so that items within the package can be accessed directly by using `package_name.item`.  The latter is not important in this particular case, because the package isn't being imported by an external application (but there is no reason it couldn't be).
+  - The \__init__.py file indicates that this is in fact a package and normally includes imports from all of the files in the package so that items within the package can be accessed directly by using `package_name.item`.  The latter is not important in this particular case, because the package isn't being imported by an external application (but there is no reason it couldn't be).
