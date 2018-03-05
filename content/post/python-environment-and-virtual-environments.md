@@ -95,6 +95,7 @@ bash-4.3$ pip3 install --user vex
 ```
 As specified in [3], add the code to .bashrc to change the prompt when in a virtual environment.  Edit ~/.bashrc, append the following and then logout and log back in:
 ```text
+# python virtual environment support
 function virtualenv_prompt() {
 if [ -n "$VIRTUAL_ENV" ]; then
 echo "(${VIRTUAL_ENV##*/}) "

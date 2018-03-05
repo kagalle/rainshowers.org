@@ -10,66 +10,72 @@ title = "Django and Python3 notes"
 
 Notes while working though the [Writing your first Django app tutorial](https://docs.djangoproject.com/en/2.0/intro/tutorial01/).<!--more-->
 
-To get anywhere I need python3, pip3:
-```bash
-sudo apt-get install python3-pip
+To get anywhere I need python3, and pip:
+```text
+~$ sudo apt-get install python3-pip
 ```
-Install virtualenv globally:
-```bash	
-sudo pip3 install virtualenv
+Install virtualenv and vex globally:
+```text	
+~$ sudo pip3 install virtualenv vex
 ```
 Create a directory structure:
-```bash
-/home/ken/django/tutorial01
+```text
+~$ mkdir -p django/tutorial01
+~$ cd django/tutorial01
+~/django/tutorial01$
 ```
-Create a virtal environment to work in:
-```bash
-virtualenv -p /usr/bin/python3 env3
+Create a virtal environment to work in:\
+See [virtual environments](python-environment-and-virtual-environments) for more information.
+```text
+~/django/tutorial01$ virtualenv -p /usr/bin/python3 env3
 ```
 Enter the virtual environment:
-```bash
-vex --path env3 bash
-```
-Verify there is a ready to use environment (specifically that the list of python modules available is limited to):
 ```text
-(env3) bash-4.4$ pip3 list
+~/django/tutorial01$ vex --path env3 bash
+```
+Verify the environment is a ready to use (specifically that the list of python modules available is limited to):
+```text
+(env3) ~/django/tutorial01$ pip3 list
 	pip (9.0.1)
 	setuptools (38.2.5)
 	wheel (0.30.0)
 ```
 Install django:
-```bash
-pip3 install Django
+```text
+(env3) ~/django/tutorial01$ pip3 install Django
 ``` 
 Create a project:
 ```text
-(env3) bash-4.4$ pwd
-	/home/ken/django/tutorial01/env3
-(env3) bash-4.4$ django-admin startproject mysite
-(env3) bash-4.4$
+(env3) ~/django/tutorial01$ cd env3
+(env3) ~/django/tutorial01/env3$ django-admin startproject mysite
+(env3) ~/django/tutorial01/env3$ cd mysite/
+```
+Create a repository for the initial project and commit work done so far:
+```text
+(env3) ~/django/tutorial01/env3/mysite$ git init
+(env3) ~/django/tutorial01/env3/mysite$ git add manage.py mysite
+(env3) ~/django/tutorial01/env3/mysite$ git commit -m"check in initial just-created project"
 ```
 Start the development server to test:
 ```text
-(env3) bash-4.4$ cd mysite/
-(env3) bash-4.4$ python manage.py runserver
+(env3) ~/django/tutorial01/env3/mysite$ python manage.py runserver
 	Performing system checks...
 	...
 	Starting development server at http://127.0.0.1:8000/
 ```
+Open a browser to the above URL.
+
 Create the polls app:
 ```text
-(env3) bash-4.4$ pwd
-	/home/ken/django/tutorial01/env3/mysite
-(env3) bash-4.4$ python manage.py startapp polls
-(env3) bash-4.4$
+(env3) ~/django/tutorial01/env3/mysite$ python manage.py startapp polls
 ```
-Edit the `polls/views.py`, `polls/urls.py`, and `mysite/urls.py`.  Navigate to the polls URL, as described in the tutoral.
+Edit the `polls/views.py`, `polls/urls.py`, and `mysite/urls.py` as described in the documentation.
+
+Navigate to the polls URL, as described in the tutoral.
 
 Ending directory structure, which is somewhat unclear from the tutorial:
 ```text
-(env3) bash-4.4$ pwd
-	/home/ken/django/tutorial01
-(env3) bash-4.4$ find env3/mysite/ \( -type d -name __pycache__ -prune \) -o -print
+(env3) ~/django/tutorial01$ find env3/mysite/ \( -type d -name __pycache__ -prune \) -o -print
 	env3/mysite/
 	env3/mysite/manage.py
 	env3/mysite/mysite
@@ -88,9 +94,5 @@ Ending directory structure, which is somewhat unclear from the tutorial:
 	env3/mysite/polls/migrations
 	env3/mysite/polls/migrations/__init__.py
 	env3/mysite/polls/__init__.py
-(env3) bash-4.4$ 
 ```
-This concludes part 1.
-
-
 	
