@@ -95,4 +95,4 @@ Ending directory structure, which is somewhat unclear from the tutorial:
 	env3/mysite/polls/migrations/__init__.py
 	env3/mysite/polls/__init__.py
 ```
-	
+![Funcational diagram](/DjangoTutorialFunctionalDiagram1.svg)
