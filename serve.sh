@@ -1,6 +1,6 @@
 #!/bin/bash
 # also serve draft documents
-hugo server -w -D
+/home/ken/go/bin/hugo server -w -D
 
 #hugo server -w
 

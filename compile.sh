@@ -1,2 +1,2 @@
 #!/bin/bash
-hugo --cleanDestinationDir
+/home/ken/go/bin/hugo --cleanDestinationDir

@@ -2,8 +2,20 @@ baseurl = "https://rainshowers.org/"
 title = "rainshowers.org"
 languageCode = "en-us"
 theme = "vienna"
-copyright = "&copy;2016 by Kenneth Galle"
-PygmentsCodeFences = true
+copyright = "&copy;2020 by Kenneth Galle"
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ""
+    lineAnchors = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    style = "monokai"
+    tabWidth = 4
 [params]
 	googleplus = "109882476484270566298"
 	github = "kagalle"
