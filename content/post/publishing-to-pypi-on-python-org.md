@@ -32,7 +32,7 @@ There are a lot of moving pieces to getting a Python project arranged and assemb
 Here are some notes on what I ended up with when publishing the first revision of *darfortie* ( [github](https://github.com/kagalle/darfortie) | [PyPI](https://pypi.python.org/pypi?:action=display&amp;name=darfortie&amp;version=1.0") )
 
 *directory and file structure*
-```text
+```nohighlight
    darfortie_project
        README.rst
        setup.py

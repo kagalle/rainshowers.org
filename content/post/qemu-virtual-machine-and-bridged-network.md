@@ -13,7 +13,7 @@ The reason for needing to use bridging is so that you can connect to the virtual
 
 The user-mode networking that is enabled by default works only in one direction, at least easily. It uses NAT, so the same rules apply as you would have between the Internet and a typical home router. The only way to make a connection to the server machine (the virtual machine) is to port-forward specific ports to it. This works fine, but it doesn't work well if the domain-name needs to be consistent, ie. you don't want the port number in the URL. I was not able to forward the well-known port number. This is an example of how to use port-forwarding with qemu:
 
-```
+```nohighlight
 qemu-system-x86_64 \
     -boot menu=on  \
     -drive file=image.qcow2,format=qcow2 \
@@ -28,7 +28,7 @@ This forwards port 5555 on the host machine to port 80 on the guest (virtual mac
 The solution that worked for me was to
 
 * Setup a Debian linux host. I had previously used Devuan to get a debian based system without systemd, however, apparently the virt-manager application now has a dependency against something that is systemd specific.  So I went with Debian testing 8.10.  I used the `jigdo` utility to obtain the installation `.iso`:
-```bash
+```nohighlight
 sudo apt-get install jigdo-file
 jigdo-lite http://cdimage.debian.org/cdimage/weekly-builds/amd64/jigdo-cd/debian-testing-amd64-netinst.jigdo
 ```
@@ -38,7 +38,7 @@ being careful to specify an appropriate mirror.
 
     In /etc/network/interfaces, setup the main network card like so:
     
-    ```bash
+    ```nohighlight
     auto br0
     iface br0 inet static
     # This is the address of the bridge (and so, the host).

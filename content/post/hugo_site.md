@@ -10,7 +10,7 @@ title = "Site now powered by hugo"
 [hugo](https://gohugo.io/) is a static website engine.  This site was previously done using b2evolution, but with the exception of supporting user comments, I did not need any of the dynamic overhead.  I moved to hugo to eliminate having to moderate comments, manage updates and ward off hacking attempts.<!--more-->
 
 Creating the site was a matter of installing hugo locally
-```text
+```nohighlight
 apt-get install hugo python-pygments
 ```
  and running `hugo new site .` in a new folder.
@@ -24,7 +24,7 @@ Update 1: I have switched to editing my pages in jEdit (or any editor that provi
 Update 2: I will often create new pages by copying existing pages and editing them. There is no need to use `hugo new post...` as you can manually update the [front matter](https://gohugo.io/content-management/front-matter) (the header at the top of the page in the `+++` blocks) as needed.
 
 The site is tested using the Hugo built in [local server](https://gohugo.io/commands/hugo_server/), started with the `serve.sh` script:
-```text
+```nohighlight
 #!/bin/bash
 hugo server -w -D
 ```
@@ -34,19 +34,19 @@ The `-D` switch causes the server to process pages that are marked as draft, whi
 Note that the server watches for file changes, and recompiles and redeploys files as you change them.  However, you still need to compile them (`compile.sh`) before deploying them to the live server (`push.sh`).
 
 Content is built using a small `compile.sh` script:
-```text
+```nohighlight
 #!/bin/bash
 hugo --cleanDestinationDir
 ```
 The built site is pushed to my host using another script, `push.sh`:
-```text
+```nohighlight
 #!/bin/bash
 rsync -e "/usr/bin/ssh" --bwlimit=2000 -av ./public/ user@myhost.com:/home/.../rainshowers.org/
 ```
 where `user@myhost.com` is my web host account.
 
 The directory tree looks like this:
-```text
+```nohighlight
 ├── compile.sh
 ├── push.sh
 ├── serve.sh

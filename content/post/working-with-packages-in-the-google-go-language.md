@@ -16,23 +16,23 @@ In both cases below, the directory structure is not significant in the naming or
 
 Using a folder to contain the object files of the package
 
-```text
+```nohighlight
 #Directory containing the source of both hello.go and main.go.
 [ken@asus hello]$ ls
 hello.go  hello_src  main.go
 ```
-```text
+```nohighlight
 # hello_src is a directory containing the object file for hello.go, namely hello.8.
 [ken@asus hello]$ ls hello_src
 hello.8
 ```
-```text
+```nohighlight
 # compile main.go
 # compile fails - can't find hello package
 [ken@asus hello]$ ~/bin/8g  main.go
 main.go:4: can't find import: hello
 ```
-```text
+```nohighlight
 # try again, tell compiler to look in the hello_src directory for included files.
 [ken@asus hello]$ ~/bin/8g -Ihello_src main.go
 [ken@asus hello]$ ls -lrt
@@ -41,13 +41,13 @@ drwxr-xr-x 2 ken ken 4096 Jun 13 22:18 hello_src
 -rw-r--r-- 1 ken ken   87 Jun 13 22:19 main.go
 -rw-r--r-- 1 ken ken 3402 Jun 15 21:50 main.8
 ```
-```text
+```nohighlight
 # link the files
 # link fails - can't find hello
 [ken@asus hello]$ ~/bin/8l main.8
 ??none??: cannot open file: /home/ken/go/pkg/linux_386/hello.8
 ```
-```text
+```nohighlight
 # tell linker to look in the hello_src directory
 [ken@asus hello]$ ~/bin/8l -Lhello_src main.8
 [ken@asus hello]$ ls -lrt
@@ -58,7 +58,7 @@ drwxr-xr-x 2 ken ken   4096 Jun 13 22:18 hello_src
 -rwxr-xr-x 1 ken ken 666048 Jun 15 21:52 8.out
 Using a real .a static library file to form package
 ```
-```text
+```nohighlight
 # create the package - hello.a
 # add the "c" option in addition to "r" and "g" to avoid the "gopack..." comment
 # g = maintain go type information in library
@@ -66,19 +66,19 @@ Using a real .a static library file to form package
 [ken@asus hello]$ ~/bin/gopack rg hello.a hello_src/*
 gopack: creating hello.a
 ```
-```text
+```nohighlight
 # create a "test" directory to test the new library in
 # copy hello.a and main.go to it
 [ken@asus test]$ ls
 hello.a  main.go
 ```
-```text
+```nohighlight
 # compile main.go
 # fails - can't find lib
 [ken@asus test]$ ~/bin/8g main.go
 main.go:4: can't find import: hello
 ```
-```text
+```nohighlight
 # compiles OK - look in current directory for hello lib
 [ken@asus test]$ ~/bin/8g -I. main.go
 [ken@asus test]$ ls -lrt
@@ -86,13 +86,13 @@ main.go:4: can't find import: hello
 -rw-r--r-- 1 ken ken 8486 Jun 15 21:44 hello.a
 -rw-r--r-- 1 ken ken 3412 Jun 15 21:45 main.8
 ```
-```text
+```nohighlight
 # link
 # fails - can't find hello lib - only place it looks is under $GOHOME/pkg/linux_386
 [ken@asus test]$ ~/bin/8l main.8
 ??none??: cannot open file: /home/ken/go/pkg/linux_386/hello.a
 ```
-```text
+```nohighlight
 # links OK - also look for libraries in the current directory
 [ken@asus test]$ ~/bin/8l -L. main.8
 

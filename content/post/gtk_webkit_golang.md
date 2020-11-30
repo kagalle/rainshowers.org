@@ -10,12 +10,12 @@ Tags = [
 Process to get a working Go development environment for GTK+ and Webkit on Debian.<!--more-->
 
 Install needed debian packages:
-```bash
+```nohighlight
 apt-get install golang git libwebkit2gtk-4.0-dev libjavascriptcoregtk-3.0-dev
 ```
 
 Create a workspace for go development:
-```text
+```nohighlight
 mkdir ~/go
 export GOPATH=~/go
 ```
@@ -38,7 +38,7 @@ And, clone examples for gotk3
 `~/go/src/github.com/gotk3/gotk3-examples`
   
 Build and install each of these into this local directory structure:
-```text
+```nohighlight
 cd ~/go/src/github.com/sqs
 go install ./gojs
 ```
@@ -47,7 +47,7 @@ This creates `~/go/pkg/linux-amd64/github.com/sqs/gojs.a`.
 Do likewise for gotk3 and go-webkit2.
 
 The Go units tests can be run using (using webkit2 as an example):
-```text
+```nohighlight
 cd ~/go/src/github.com/sourcegraph/go-webkit2
 go test ./webkit2
 ```

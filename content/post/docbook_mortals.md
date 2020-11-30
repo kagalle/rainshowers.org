@@ -12,7 +12,7 @@ draft = true
 
 `hugo new site .`
 
-```bash
+```nohighlight
 #!/bin/bash
 hugo --cleanDestinationDir
 ```

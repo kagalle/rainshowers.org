@@ -14,7 +14,7 @@ title = "Installing gtkD for ldc"
 1. `make install` copies include and lib files under /usr/local/.
 
 libraries:
-```
+```nohighlight
 libgtkd.a
 libgtkdgl.a
 libgtkdsv.a
@@ -29,7 +29,7 @@ First attempt was to do
 `ldc HelloWorld.d`
 
 That resulted in a linking error:
-```
+```nohighlight
 /usr/local/lib/libgtkd.a(Loader.o): In function `_D4gtkc6Loader6Linker17dumpLoadLibrariesFZv':
 gtkc.Loader:(.text+0x4e8): undefined reference to `_D5tango2io6Stdout6StdoutC5tango2io6stream6Format20__T12FormatOutputTaZ12FormatOutput'
 gtkc.Loader:(.text+0x518): undefined reference to `_D5tango2io6stream6Format20__T12FormatOutputTaZ12FormatOutput8formatlnMFAaYC5tango2io6stream6Format20__T12FormatOutputTaZ12FormatOutput'                                                                                                                               
@@ -48,7 +48,7 @@ status: 1
 ```
 After a lot of searching, I found a note is post that alluded to a solution - link manually with gcc, instead of letting ldc do the linking:
 
-```
+```nohighlight
 ldc -c HelloWorld.d
 gcc HelloWorld.o -o HelloWorld -lm -lpthread -ldl -lgtkd -ltango-base-ldc -ltango-user-ldc -v
 Using built-in specs.
@@ -66,7 +66,7 @@ And that leaves me with an executable that runs.
 Other information I found, seemed to indicate that I needed to use dsss to build. That went nowhere because there doesn't appear to be any way to install dsss with/to-work-with ldc (only dmd and gdc).
 
 At this point my /usr/local/bin/ldc.conf is... "/usr/local/include/d" contains the header files for gtk.
-```
+```nohighlight
 default:
 {
     // 'switches' holds array of string that are appends to the command line

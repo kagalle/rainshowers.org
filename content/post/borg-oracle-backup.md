@@ -32,7 +32,7 @@ Use any x86_64 based PC, running Devuan Linux. During installation of Devuan, co
 
 ### Hard drives and partitions:
 First hard drive, /dev/sda, 500 GB SATA
-~~~~
+```nohighlight
 #gdisk -l /dev/sda
 
 Number  Start (sector)    End (sector)  Size       Code  Name
@@ -41,33 +41,33 @@ Number  Start (sector)    End (sector)  Size       Code  Name
    3          620544         4814847   2.0 GiB     8200  Linux swap
    4         4814848        88700927   40.0 GiB    8300  Linux filesystem
    5        88700928       976773134   423.5 GiB   FD00  Linux RAID
-~~~~
+```
 Second hard drive, /dev/sdb, 1 TB SATA
-~~~~
+```nohighlight
 #gdisk -l /dev/sdb
 
 Number  Start (sector)    End (sector)  Size       Code  Name
    1            2048      1953525134   931.5 GiB   FD00  Linux RAID
-~~~~
+```
 Partition detail
 
   * /dev/sda2 is /boot
   * /dev/sda4 is /
   * /dev/sda5 and /dev/sdb1 is combined into a RAID-0 array /dev/md0, and mounted to /mnt/raid:
-~~~~
+```nohighlight
 #cat /proc/mdstat
 
 md0 : active raid0 sda5[0] sdb1[1]
       1420533248 blocks super 1.2 512k chunks
-~~~~
+```
 ### Kernel configuration:
   * For this machine I needed to add `noapic` to get the time clock to be stable.
   * Because the two partitions for the RAID array are different sizes, I needed to add `raid0.default_layout=1`.
-~~~~
+```nohighlight
 Within /etc/default/grub:
 
 GRUB_CMDLINE_LINUX="raid0.default_layout=1 noapic"
-~~~~
+```
 ### Software
 Install all of these using the Devuan repository.
 
@@ -101,20 +101,20 @@ Backup system related
 
 ### Verify system date/time
 Verify that NTP is operational
-```bash
+```nohighlight
 ntpstat
 ```
 The output should indicate "synchronized" and the current accuracy.
 
 ### Create backup user
 Create the `borgbackup` user, assigning it a strong password. This is the user that will run the borg service process and handle client requests for creating backups.
-```bash
+```nohighlight
 adduser borgbackup
 ```
 Logging in using the password will be needed only for configuring clients, not for normal operation.
 
 ### Create repository folders for each client
-```bash
+```nohighlight
 mkdir /mnt/raid/client_machine_repository
 chown borgbackup:borgbackup /mnt/raid/client_machine_repository
 mkdir /mnt/raid/client_machine_repository_gpg
@@ -128,21 +128,22 @@ Normally it is the root user on the client that interacts with the borg server, 
 Install borg, `apt install borgbackup`.
 
 Create a ssh key-pair, or identify one already created which has no passphrase associated with it. To create one:
-```bash
+```nohighlight
 ssh-keygen -t ed25519
 ```
 Press enter when prompted for a passphrase. This creates
-~~~~
-~/.ssh/id_ed25519			- the private key
-~/.ssh/id_ed25519.pub		- the public key
-~~~~
+```nohighlight
+~/.ssh/id_ed25519        - the private key
+~/.ssh/id_ed25519.pub    - the public key
+```
 
 ----
 
 *Note*: Running an agent is not required, as the key has no passphrase. Should you wish to use a ssh key with a passphrase, then the follow procedure is needed.
 
  Configure the user account to start the ssh agent and load their ssh key(s) into the ssh agent as they log in. This enables the client to log into the backup server unattended. Add this bit of script to the end of the user's `~/.bashrc`, or in some other way configure a ssh agent to run with they key just created:
-```bash
+
+```nohighlight
 if [ ! -S ~/.ssh/ssh_auth_sock ]; then
   eval `ssh-agent`
   ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
@@ -154,7 +155,7 @@ ssh-add -l > /dev/null || ssh-add
 ----
 
 Copy the public key of the client user to the backup server:
-```bash
+```nohighlight
 ssh-copy-id -i ~/.ssh/id_ed25519.pub borgbackup@backup-server
 ```
 Use the borgbackup password when prompted.
@@ -165,7 +166,7 @@ When `borg` is run as `borg serve` it operates in server mode. This is initiated
 ### ssh configuration to run borg service
 
 Log in to the server as `borgbackup`.  Edit the ssh configuration to dedicate the ssh public key authentication just added to a borg server process. Edit `~/.ssh/authorized_keys`, locate the new public key just added and edit that one line as so. Note the structure of this line has to be exact to the space, or it simply won't work and with very little feedback as to why.
-```bash
+```nohighlight
 command="borg serve --restrict-to-path /mnt/raid/client_machine_repository",restrict ssh-ed25519 AAAA... root@client_machine
 ```
 ## Client setup (part 2)
@@ -173,7 +174,7 @@ command="borg serve --restrict-to-path /mnt/raid/client_machine_repository",rest
 ### borg repository initialization
 
 From the client, initialize the borg repository on the server using the ssh credentials just configured:
-```bash
+```nohighlight
 borg init --encryption=none --append-only borgbackup@backup_server:/mnt/raid/client_machine_repository
 # verify using:
 borg list borgbackup@backup_server:/mnt/raid/client_machine_repository
@@ -181,12 +182,12 @@ borg list borgbackup@backup_server:/mnt/raid/client_machine_repository
 Note on encryption: I choose to not encrypt the data using borg, but rather do encryption later using gpg for the off-site backup files. The files that are kept locally on the backup server do not need to be encrypted (as they are not encrypted on the actual client that is on the same network). The encryption provided by borg can be either password-only, or key plus password based, however it is not public/private key encryption (it is a form of symmetric encryption). Putting the burden of encryption on the borg process means configuring the client with the password for the repository and securing it, which can be done with some degree of safety, but in my use case, it is simpler to omit encryption at this stage.
 
 Note on `borg list` command. This command has two uses. It will list the backups within the repository, as in the example above, or it can be used to list the contents of a specific backup by adding the identifier of the backup, like:
-~~~~
+```nohighlight
 borg list borgbackup@backup_server:/mnt/raid/client_machine_repository::client_machine-home-2020-01-01T00:00:00
-~~~~
+```
 ### backup script
 The backup script, on the client, runs borg as a client application to backup the client files and then again to prune the backup repository of unneeded prior backups. This script is based on the script on the borg [Quick Start](https://borgbackup.readthedocs.io/en/stable/quickstart.html) page:
-```bash
+```nohighlight
 #!/bin/sh
 
 # some helpers and error handling:
@@ -253,11 +254,11 @@ Note:
 The script can be tested by running it directly from the command line.
 ### configure cron
 Configure cron to run this script daily. For cron to run it, it has to have the correct file permissions, ie. owned by root and owner-only visibility:
-```bash
+```nohighlight
 chmod go-rwx ~/borg_backup_script_home.sh
 ```
 Next, create a symbolic link in /etc/cron.daily:
-```bash
+```nohighlight
 cd /etc/cron.daily
 ln -s /root/borg_backup_script_home.sh borg_backup_script_home
 ```
@@ -270,7 +271,7 @@ Use this process to backup borg repository to offsite storage.
 Log into the backup server as your normal user that has access to root via sudo, or log in directly as root.
 
 Create a temporary user account:
-```bash
+```nohighlight
 adduser borgbackuptemp
 ```
 This account will be used later to test the key-pair.
@@ -280,13 +281,13 @@ Log out.  Then log back in as the borgbackup user.
 ### Create GPG key-pair on backup server
 
 Create a strong (long and random) password to use as the passphrase for the key-pair (the private key). This command can be used to generate one:
-```bash
+```nohighlight
 < /dev/urandom tr -dc A-Za-z0-9 | head -c30;echo;
 ```
 In your password manager, create an entry for this key and copy the passphrase there. Keep the entry open as there is more information to include, gathered below.
 
 Create a key specifically for these off-site backups:
-```bash
+```nohighlight
 tmux
 gpg --full-generate-key
 ```
@@ -310,20 +311,20 @@ It will prompt for a passphrase. Paste in the password you created earlier.
 When complete it will output details about the key. 
 
 Enter these to get full details of the new key:
-```bash
+```nohighlight
 gpg --list-keys
 gpg --list-secret-keys
 ```
 Copy all of this output from the console screen into the memo section of the password manager entry for this key's passphrase, starting from "gpg:  key ...."
 
 ### Export the GPG key-pair
-```bash
+```nohighlight
 gpg --export-secret-keys "Firstname Lastname (borgbackup@backup) <user@mydomain.com>" > borgbackup_secretkey.gpg               
 gpg --export "Firstname Lastname (borgbackup@backup) <user@mydomain.com>" > borgbackup_publickey.gpg               
 gpg --export-ownertrust > borgbackup_otrust.gpg
 ```
 Enter
-```bash
+```nohighlight
 exit
 ```
 to leave the `tmux` session. 
@@ -333,7 +334,7 @@ Log out as borgbackup.
 ### Test exported GPG key-pair
 Log in as the borgbackuptemp user created earlier. Import the keys you just exported into this temporary account, then test that they work.
 
-```bash
+```nohighlight
 tmux
 gpg --import /home/borgbackup/borgbackup_secretkey.gpg
 gpg --import /home/borgbackup/borgbackup_publickey.gpg
@@ -353,13 +354,13 @@ Log out of the borgbackuptemp account. This account can be deleted.
 Log back in as the borgbackup user. 
 
 Modify permissions of the exported secret key file:
-```bash
+```nohighlight
 chmod go-rwx borgbackup_secretkey.gpg
 ```
 Copy these three export files to multiple safe and secure locations.
 
 ### Create encrypted copy of borg repository
-```bash
+```nohighlight
 cd /mnt/raid/
 
 gpgdir --encrypt client_machine_repository \
@@ -403,7 +404,7 @@ Log into the backup server as borgbackup.
 
 You can configure rclone using the `rclone config` command and following the prompts, or start by creating a configuration file at `~/.config/rclone/rclone.conf:
 
-~~~~
+```nohighlight
 [borgbackup_oracle_cloud]
 type = s3
 provider = Other
@@ -412,7 +413,7 @@ access_key_id = <copied-from-customer-secret-keys>
 secret_access_key = <copied-from-create-customer-secret-keys-setup-screen>
 region = <region identifier>
 endpoint = https://<from-tenancy-object-storage-namespace>.compat.objectstorage.<region identifier>.oraclecloud.com
-~~~~
+```
 
 Using the information saved the password manager entry with name 'Oracle Cloud Backup Server Access':
 
@@ -434,13 +435,13 @@ This should return successfully without printing anything, as your bucket is sti
 Once the configuration is working, you can encrypt the configuration file, since the secret key is stored in the configuration.
 
 Create a strong (long and random) password to use as the password for the configuration. This command can be used to generate one:
-```bash
+```nohighlight
 < /dev/urandom tr -dc A-Za-z0-9 | head -c30;echo;
 ```
 In your password manager, create an entry for this "oracle rclone configuration on backup server", copy the password into this entry.  For the username, you can store "borgbackup_oracle_cloud".  You may also want to include that the server's IP or name and that the entry belongs to the borgbackup user on that server and that it encrypts the rclone configuration.
 
 run
-```bash
+```nohighlight
 rclone config
 ```
 and select option `s` to set configuration password. Then select option `a` to add password. Paste in the configuration password, and again to confirm. Select `q` and `q` again to exit out.
@@ -448,7 +449,7 @@ and select option `s` to set configuration password. Then select option `a` to a
 You will need the password when you run rclone.
 
 ### Push copy of borg repository to Oracle off-site bucket
-```bash
+```nohighlight
 cd /mnt/raid/
 rclone -v sync client_machine_repository_gpg \
     borgbackup_oracle_cloud:borgbackup_client_machine_repository
@@ -461,7 +462,7 @@ Because the borg archive is setup to append only, any existing files will not ch
 
 First, move the encrypted files back into the repository directory:
 
-```bash
+```nohighlight
 cd /mnt/raid/client_machine_repository_gpg
 find -mindepth 1 -type f -name "*.gpg" -exec mv \{\} ../client_machine_repository/\{\} \;
 ```

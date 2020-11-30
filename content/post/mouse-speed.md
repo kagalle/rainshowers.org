@@ -9,7 +9,7 @@ Slowing down Logitech mouse speed in Xorg.<!--more-->
 
 Sharing a script to run to slow down the pointer speed of a Logitech mouse.
 
-```text
+```nohighlight
 #!/bin/bash
 re1="[^=]*=([0-9]+)"
 idline=$(xinput list | grep "Logitech USB Optical Mouse")

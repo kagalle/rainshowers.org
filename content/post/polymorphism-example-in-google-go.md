@@ -13,7 +13,7 @@ It has one interface, "Communicate", with the contract that it knows how to "Tal
 
 In the main function, a Cat and Dog are created and assigned to Communicate variables. When each of these are told to Talk() they do it correctly (based on their actual types).
 
-```go
+```nohighlight
 package main
 
 import "fmt"
@@ -65,7 +65,7 @@ func main() {
 }
 ```
 Output is:
-```text
+```nohighlight
 Cat named KC says meow
 Dog named Red says woof
 ```

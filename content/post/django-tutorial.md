@@ -11,53 +11,53 @@ title = "Django and Python3 notes"
 Notes while working though the [Writing your first Django app tutorial](https://docs.djangoproject.com/en/2.0/intro/tutorial01/).<!--more-->
 
 To get anywhere I need python3, and pip:
-```text
+```nohighlight
 ~$ sudo apt-get install python3-pip
 ```
 Install virtualenv and vex globally:
-```text	
+```nohighlight	
 ~$ sudo pip3 install virtualenv vex
 ```
 Create a directory structure:
-```text
+```nohighlight
 ~$ mkdir -p django/tutorial01
 ~$ cd django/tutorial01
 ~/django/tutorial01$
 ```
 Create a virtal environment to work in:\
 See [virtual environments](python-environment-and-virtual-environments) for more information.
-```text
+```nohighlight
 ~/django/tutorial01$ virtualenv -p /usr/bin/python3 env3
 ```
 Enter the virtual environment:
-```text
+```nohighlight
 ~/django/tutorial01$ vex --path env3 bash
 ```
 Verify the environment is a ready to use (specifically that the list of python modules available is limited to):
-```text
+```nohighlight
 (env3) ~/django/tutorial01$ pip3 list
 	pip (9.0.1)
 	setuptools (38.2.5)
 	wheel (0.30.0)
 ```
 Install django:
-```text
+```nohighlight
 (env3) ~/django/tutorial01$ pip3 install Django
 ``` 
 Create a project:
-```text
+```nohighlight
 (env3) ~/django/tutorial01$ cd env3
 (env3) ~/django/tutorial01/env3$ django-admin startproject mysite
 (env3) ~/django/tutorial01/env3$ cd mysite/
 ```
 Create a repository for the initial project and commit work done so far:
-```text
+```nohighlight
 (env3) ~/django/tutorial01/env3/mysite$ git init
 (env3) ~/django/tutorial01/env3/mysite$ git add manage.py mysite
 (env3) ~/django/tutorial01/env3/mysite$ git commit -m"check in initial just-created project"
 ```
 Start the development server to test:
-```text
+```nohighlight
 (env3) ~/django/tutorial01/env3/mysite$ python manage.py runserver
 	Performing system checks...
 	...
@@ -66,7 +66,7 @@ Start the development server to test:
 Open a browser to the above URL.
 
 Create the polls app:
-```text
+```nohighlight
 (env3) ~/django/tutorial01/env3/mysite$ python manage.py startapp polls
 ```
 Edit the `polls/views.py`, `polls/urls.py`, and `mysite/urls.py` as described in the documentation.
@@ -74,7 +74,7 @@ Edit the `polls/views.py`, `polls/urls.py`, and `mysite/urls.py` as described in
 Navigate to the polls URL, as described in the tutoral.
 
 Ending directory structure, which is somewhat unclear from the tutorial:
-```text
+```nohighlight
 (env3) ~/django/tutorial01$ find env3/mysite/ \( -type d -name __pycache__ -prune \) -o -print
 	env3/mysite/
 	env3/mysite/manage.py

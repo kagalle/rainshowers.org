@@ -14,21 +14,21 @@ While working though an [introduction to virtual environments](https://www.dabap
 
 #### Initial setup only
 Install pip
-```text
+```nohighlight
 sudo apt-get install python-pip
 ```
 Install virtualenv (globally)
-```text
+```nohighlight
 sudo pip install virtualenv
 ```
 Install vex (globally)  (Note: this has a dependency on virtualenv, so this step would suffice for both this step and the previous.)
-```text
+```nohighlight
 sudo pip install vex
 ```
 #### Setup project space
 Create the project folder and setup the environment
 
-```text
+```nohighlight
 ~$ mkdir myproject
 ~$ cd myproject/
 ~/myproject$ virtualenv -p /usr/bin/python2 env2
@@ -39,7 +39,7 @@ Installing setuptools, pip, wheel...done.
 ```
 
 Enter the virtual environment using vex
-```text
+```nohighlight
 ~/myproject$ vex --path env2 bash
 ```
 Note: these steps don't include setting up the modified command prompt when within the environment, detailed below.
@@ -62,39 +62,39 @@ are not the same at all, just named the same.
 Steps so far...
 
 Install virtualenv into my Python system packages.  I used "su" to work as root; sudo would also work.
-```text
+```nohighlight
 [root@host ~]# pip3 install virtualenv
 ```
 
 Check my work
-```text
+```nohighlight
 bash-4.3$ pip3 list
 ```
 
 Create a test project and create a virtual environment within it
-```text
+```nohighlight
 bash-4.3$ mkdir ~/myproject
 bash-4.3$ cd ~/myproject
 bash-4.3$ virtualenv -p /usr/bin/python3 env3
 ```
 Compare pip between the system and the virtual environment
-```text
+```nohighlight
 bash-4.3$ meld /usr/bin/pip3 env3/bin/pip3
 ```
 or if meld is not installed,
-```text
+```nohighlight
 bash-4.3$ diff /usr/bin/pip3 env3/bin/pip3
 ```
 Prepare for installing packages into "user" space.  Edit ~/.profile and append:
-```text
+```nohighlight
 PATH=$PATH:/home/ken/.local/bin
 ```
 Install vex into my user packages (not in the virtual environment)
-```text
+```nohighlight
 bash-4.3$ pip3 install --user vex
 ```
 As specified in [3], add the code to .bashrc to change the prompt when in a virtual environment.  Edit ~/.bashrc, append the following and then logout and log back in:
-```text
+```nohighlight
 # python virtual environment support
 function virtualenv_prompt() {
 if [ -n "$VIRTUAL_ENV" ]; then
@@ -104,15 +104,15 @@ fi
 export PS1="$(virtualenv_prompt)$PS1"
 ```
 Enter the virtual environment using vex:
-```text
+```nohighlight
 bash-4.3$ vex --path env3 bash
 ```
 Check my work with the following.  The only packages installed in the virtual environment are pip, setuptools and wheel.
-```text
+```nohighlight
 (env3) bash-4.3$ pip3 list
 ```
 Exit the vitual environment and check again.  The list now contains 8 items, including vex and virtualenv.
-```text
+```nohighlight
 (env3) bash-4.3$ exit
 bash-4.3$ pip3 list
 ```

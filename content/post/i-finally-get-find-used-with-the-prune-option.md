@@ -10,7 +10,7 @@ After years of muddling through with find and the "-prune" option, the light fin
 
 Find is going to search every single directory, file, etc on the given path (or the current path, if none is specified). For each thing found it is going to try to get it to "fit" through the logic (or "hole") you provide. The first hole where it fits, that's where it goes.
 
-```text
+```nohighlight
         /--------- hole 1 ----------\
 find . ( -type d -name media -prune ) -o
 

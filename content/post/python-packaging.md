@@ -37,19 +37,19 @@ The source format lives in a directory
 
 The \__main__.py file imports the other two files and contains a `main()`, along with the requisite 
 
-```text
+```nohighlight
 if __name__ == '__main__':
     main()
 ```
 So, if I'm in the directory `/home/ken/darfortie`, I can run the app using
 
-```text
+```nohighlight
 $ python darfortie
 ```
 
 A shell script also works:
 
-```text
+```nohighlight
 #!/bin/bash
 cd /home/ken/darfortie
 /usr/bin/python darfortie $@
@@ -61,11 +61,11 @@ The first executable format is a zip file that contains the same three files, ab
 - darfortie_previous_file.py
 - \__main__.py
 This app runs in a similar way, I can run the app using:
-```text
+```nohighlight
 $ python /home/ken/darfortie/darfortie.zip
 ```
 The second executable format is zip file renamed as `darfortie`, has its attributes set to executable and with the line `#!/usr/bin/env python` prepended to the file. This runs as:
-```text
+```nohighlight
 $ python /home/ken/darfortie/bin/darfortie
 ```
 All of this is fine and works as expected. Enter PyPI...
@@ -76,7 +76,7 @@ All of this is fine and works as expected. Enter PyPI...
 1. PyPI only supports ReStructured text (.rst) for the readme.  Github supports both .rst and Markdown (.md).  So I converted my readme file to .rst and updated the contents, removing the information about running darfortie from source, or zip, as I described above, and changed it to instruct how to install the project using `pip` which is the application that interfaces with the PyPI repository and installs applications on a client machine.
 2. Renamed the `__main__.py` module to `darfortie_main.py`.
 3. Created a new module `__init__.py` which simply imports the three modules of the project:
-```text
+```nohighlight
 darfortie_main
 darfortie_params
 darfortie_previous_file
@@ -84,23 +84,23 @@ darfortie_previous_file
 4. Created a setup.py file which PyPI uses to register the application.
 
 This was uploaded and as a result you can run this to install darfortie on a machine:
-```text
+```nohighlight
 pip install -i https://pypi.python.org/pypi darfortie
 ```
 If this is done as a normal user, then the install puts the package in
-```text
+```nohighlight
 /home/ken/.local/lib/python2.7/site-packages/darfortie
 ```
 and creates an execuatable such that the application can be run by:
-```text
+```nohighlight
 $ ./local/bin/darfortie
 ```
 If installed as `root`, then the install is done into
-```text
+```nohighlight
 /usr/local/lib/python2.7/dist-packages/darfortie
 ```
 and the executable is created as:
-```text
+```nohighlight
 /usr/local/bin/darfortie
 ```
 which is normally on the system PATH.
