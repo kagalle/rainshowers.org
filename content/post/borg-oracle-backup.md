@@ -486,21 +486,21 @@ REPO="asus_home"
 REPO_GPG="asus_home_gpg"
 
 # move existing gpg files back into main repository
-cd /mnt/raid/$REPO_GPG
-find -mindepth 1 -type f -name "*.gpg" -exec mv \{\} ../$REPO/\{\} \;
+cd "/mnt/raid/$REPO_GPG"
+find -mindepth 1 -type f -name "*.gpg" -exec mv \{\} "../$REPO/"\{\} \;
 
 # encrypt new files
 cd /mnt/raid
-gpgdir --encrypt $REPO --Key-id 7367000000000000DC0F2A850000000000006DFF --no-delete --skip-test
+gpgdir --encrypt "$REPO" --Key-id 7367000000000000DC0F2A850000000000006DFF --no-delete --skip-test
 
 # move all encrypted files into the gpg directory
-cd $REPO
-find -mindepth 1 -type d -exec mkdir ../$REPO_GPG/\{\} \
-find -mindepth 1 -type f -name "*.gpg" -exec mv \{\} ../$REPO_GPG/\{\} \;
+cd "$REPO"
+find -mindepth 1 -type d -exec mkdir "../$REPO_GPG/"\{\} \;
+find -mindepth 1 -type f -name "*.gpg" -exec mv \{\} "../$REPO_GPG/"\{\} \;
 
 # push new files up
 cd /mnt/raid/
-rclone -v sync $REPO_GPG borgbackup_oracle_cloud:borgbackup_asus_home
+rclone -v sync "$REPO_GPG" borgbackup_oracle_cloud:borgbackup_asus_home
 ```
 
 ### Summary
