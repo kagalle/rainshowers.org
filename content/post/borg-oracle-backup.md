@@ -374,7 +374,9 @@ find -mindepth 1 -type d -exec mkdir ../client_machine_repository_gpg/\{\} \;
 find -mindepth 1 -type f -name "*.gpg" -exec mv \{\} ../client_machine_repository_gpg/\{\} \;
 
 ```
-This process encrypts all of the files in the archive using the public key of the key-pair. The files are created right along side the originals. The `--no-delete` option is given so that the original files are not removed. The first `find` command duplicates the directory structure in the archive to the directory that will store the encrypted files. The second `find` command actually moves the encrypted files to their new location.
+This process encrypts all of the files in the archive using the public key of the key-pair. The files are created right along side the originals. The `--no-delete` option is given so that the original files are not removed. Note that the `Key-id` can be specified with the name/email string, or you can use the long ID that is shown with `gpg --list-keys` (long string of 0-9, A-F characters).
+
+The first `find` command duplicates the directory structure in the archive to the directory that will store the encrypted files. The second `find` command actually moves the encrypted files to their new location.
 
 ### Create Oracle archive cloud storage account
 I chose to use Oracle's cloud storage for off-site backups because they have an option for archive storage, which is very economical. In return for this, what is stored there is not immediately available. To access the storage you first have to request access to it, which moves it into a normal cloud storage area for a selectable period of time. During that time period, you are paying a higher rate for the storage and can access the data. After this time window closes, the storage automatically reverts to archive storage. This is a fine trade off, since the only time I will need to access this data is if I loose not only the live system data, but also the live backup server.
@@ -427,9 +429,13 @@ Test that the configuration is working:
 
 This should print "borgbackup_oracle_cloud". This is identifier for the configuration in the rclone.conf file.
 
+`rclone lsd borgbackup_oracle_cloud:`
+
+This will list the buckets you have created on oracle - all the items that can come after the colon in the path.
+
 `rclone ls borgbackup_oracle_cloud:borgbackup_client_machine_repository`
 
-This should return successfully without printing anything, as your bucket is still empty.
+This should return successfully without printing anything, as this bucket's folder is still empty.
 
 ### Encrypt configuration
 Once the configuration is working, you can encrypt the configuration file, since the secret key is stored in the configuration.
@@ -469,6 +475,34 @@ find -mindepth 1 -type f -name "*.gpg" -exec mv \{\} ../client_machine_repositor
 
 Then repeat the steps above, "Create encrypted copy of borg repository." So, rerun `gpgdir` to encrypt those files not already encrypted (`gpgdir` will skip files that are already encrypted, leaving them as they were), and rerun the two `find` commands to move the `.gpg` files back into the `client_machine_repository_gpg` directory. Then repeat the step above, "Push copy of borg repository to Oracle off-site bucket" to update the files in the Oracle bucket. This will copy up only the files not already there.
 
+### Sample script to update off-site backup
+
+This is a sample script to update an off-site backup.  This is stored in `/mnt/raid/update_offsite_for_asus.sh`, owned by borgbackup and set to executable. Adjust values as needed.
+
+```nohighlight
+#!/bin/bash -v
+
+REPO="asus_home"
+REPO_GPG="asus_home_gpg"
+
+# move existing gpg files back into main repository
+cd /mnt/raid/$REPO_GPG
+find -mindepth 1 -type f -name "*.gpg" -exec mv \{\} ../$REPO/\{\} \;
+
+# encrypt new files
+cd /mnt/raid
+gpgdir --encrypt $REPO --Key-id 7367000000000000DC0F2A850000000000006DFF --no-delete --skip-test
+
+# move all encrypted files into the gpg directory
+cd $REPO
+find -mindepth 1 -type d -exec mkdir ../$REPO_GPG/\{\} \
+find -mindepth 1 -type f -name "*.gpg" -exec mv \{\} ../$REPO_GPG/\{\} \;
+
+# push new files up
+cd /mnt/raid/
+rclone -v sync $REPO_GPG borgbackup_oracle_cloud:borgbackup_asus_home
+```
+
 ### Summary
 
 This is a new system to me, but so far this seems functional. Borg seems to be a well-supported tool. The backup is accessable and understandable, which increases my confidence level in it.
@@ -480,3 +514,5 @@ I am lacking perhaps the most important steps - verifying that the backup, eithe
 The one feature I find Borg is missing is a Windows client. Even though the software is Python based, this seems to not be available. Hoping updates to come in this regard.
 
 If you find this useful, please provide feedback on what I may have missed, or other suggestions.
+
+updated: 11/30/2020.
